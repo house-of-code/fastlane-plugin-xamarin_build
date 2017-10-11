@@ -1,7 +1,7 @@
 module Fastlane
   module Actions
     class XamarinBuildAction < Action
-      MDTOOL = '/Applications/Xamarin\ Studio.app/Contents/MacOS/mdtool'.freeze
+      MDTOOL = '/Applications/Visual\ Studio.app/Contents/MacOS/vstool'.freeze
       XBUILD = '/Library/Frameworks/Mono.framework/Commands/xbuild'.freeze
 
       def self.run(params)
@@ -34,8 +34,17 @@ module Fastlane
         get_build_path(platform, build_type, solution)
       end
 
+      def self.mdtool_archive_projects(params, projects)
+        platform = params[:platform]
+        build_type = params[:build_type]
+        solution = params[:solution]
 
-
+        for project in projects
+          configuration = "--configuration:#{build_type}|#{platform}"
+          command = "#{MDTOOL} archive -p:#{project} #{solution} \"#{configuration}\""
+          Helper::XamarinBuildHelper.bash(command, !params[:print_all])
+        end
+      end
       def self.mdtool_build_projects(params, projects)
         platform = params[:platform]
         build_type = params[:build_type]
@@ -48,6 +57,7 @@ module Fastlane
           Helper::XamarinBuildHelper.bash(command, !params[:print_all])
         end
 
+        self.mdtool_archive_projects(params, projects)
       end
 
       def self.xbuild_build_solution(params)
