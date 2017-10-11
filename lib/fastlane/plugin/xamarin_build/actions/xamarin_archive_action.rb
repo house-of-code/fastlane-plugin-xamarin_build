@@ -11,6 +11,7 @@ module Fastlane
         if params[:build_util] == 'mdtool'
           mdtool_archive_project(params, project)
         else
+          xbuild_archive_solution(params)
            puts "echo 'not supported yet'"
         end
 
@@ -24,6 +25,23 @@ module Fastlane
         configuration = "--configuration:#{BUILD_TYPE}|#{platform}"
         command = "#{MDTOOL} archive -p:#{project} #{solution} \"#{configuration}\""
         Helper::XamarinBuildHelper.bash(command, !params[:print_all])
+      end
+
+      #/Library/Frameworks/Mono.framework/Commands/xbuild YourSolution.sln /p:Configuration=Ad-Hoc /p:Platform=iPhone /p:BuildIpa=true
+
+      def self.xbuild_archive_solution(params)
+        platform = params[:platform]
+        build_type = BUILD_TYPE
+        solution = params[:solution]
+
+        command = "#{XBUILD} "
+        command << solution
+        command << "/p:Platform=#{platform} " if platform != nil
+        command << "/p:Configuration=#{build_type} " if build_type != nil
+        command << "/p:BuildIpa=true"
+
+        Helper::XamarinBuildHelper.bash(command, !params[:print_all])
+
       end
 
       # Returns bin path for given platform and build_type or nil
@@ -99,7 +117,7 @@ module Fastlane
               env_name: 'FL_XAMARIN_BUILD_PROJECT',
               description: 'Project to build or clean',
               is_string: true,
-              optional: false
+              optional: true
           )
         ]
       end
