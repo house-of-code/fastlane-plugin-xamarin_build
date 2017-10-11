@@ -1,6 +1,6 @@
 module Fastlane
   module Actions
-    class XamarinBuildAction < Action
+    class XamarinArchiveAction < Action
       MDTOOL = '/Applications/Visual\ Studio.app/Contents/MacOS/vstool'.freeze
       XBUILD = '/Library/Frameworks/Mono.framework/Commands/xbuild'.freeze
       BUILD_TYPE = 'Release'
@@ -42,7 +42,7 @@ module Fastlane
       end
 
       def self.description
-        'Build xamarin android and ios projects'
+        'Archive xamarin ios project'
       end
 
       def self.authors
