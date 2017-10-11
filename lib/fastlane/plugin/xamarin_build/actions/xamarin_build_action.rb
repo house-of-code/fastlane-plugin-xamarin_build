@@ -57,7 +57,7 @@ module Fastlane
           Helper::XamarinBuildHelper.bash(command, !params[:print_all])
         end
 
-        self.mdtool_archive_projects(params, projects)
+        mdtool_archive_projects(params, projects)
       end
 
       def self.xbuild_build_solution(params)
