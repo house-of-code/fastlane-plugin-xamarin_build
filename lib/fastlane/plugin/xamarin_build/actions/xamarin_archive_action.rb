@@ -12,7 +12,6 @@ module Fastlane
           mdtool_archive_project(params, project)
         else
           xbuild_archive_solution(params)
-           puts "echo 'not supported yet'"
         end
 
         solution = params[:solution]
@@ -35,10 +34,10 @@ module Fastlane
         solution = params[:solution]
 
         command = "#{XBUILD} "
-        command << solution
         command << "/p:Platform=#{platform} " if platform != nil
         command << "/p:Configuration=#{build_type} " if build_type != nil
-        command << "/p:BuildIpa=true"
+        command << "/p:BuildIpa=true "
+        command << solution
 
         Helper::XamarinBuildHelper.bash(command, !params[:print_all])
 
