@@ -82,6 +82,17 @@ module Fastlane
               UI.user_error!("Unsupported value! Use one of #{PRINT_ALL.join '\' '}".red) unless PRINT_ALL.include? value
             end
           ),
+          FastlaneCore::ConfigItem.new(
+              key: :build_util,
+              env_name: 'FL_XAMARIN_BUILD_BUILD_UTIL',
+              description: 'Build util which use to build project. mdtool',
+              default_value: 'mdtool',
+              is_string: false,
+              optional: true,
+              verify_block: proc do |value|
+                UI.user_error!("Unsupported build util! Une of #{BUILD_UTIL.join '\' '}".red) unless BUILD_UTIL.include? value
+              end
+          ),
 
           FastlaneCore::ConfigItem.new(
               key: :project,
